@@ -5,23 +5,37 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreClienteRequest;
 use App\Http\Requests\UpdateClienteRequest;
 use App\Models\Cliente;
+use App\Http\Responses\ApiResponse;
 
 class ClienteController extends Controller
 {
-    public function store(StoreClienteRequest $req) {
-        return response()->json(Cliente::create($req->validated()), 201);
-    }
+	public function store(StoreClienteRequest $req)
+	{
+		$c = Cliente::create($req->validated());
+		return ApiResponse::created($c, 'Cliente criado');
+	}
 
-    public function update(UpdateClienteRequest $req, int $id) {
-        $c = Cliente::findOrFail($id); $c->fill($req->validated())->save(); return response()->json($c);
-    }
+	public function update(UpdateClienteRequest $req, int $id)
+	{
+		$c = Cliente::findOrFail($id);
+		$c->fill($req->validated())->save();
+		return ApiResponse::ok($c, 'Cliente atualizado');
+	}
 
-    public function destroy(int $id) { Cliente::findOrFail($id)->delete(); return response()->noContent(); }
+	public function destroy(int $id)
+	{
+		Cliente::findOrFail($id)->delete();
+		return ApiResponse::noContent();
+	}
 
-    public function show(int $id) { return response()->json(Cliente::findOrFail($id)); }
+	public function show(int $id)
+	{
+		return ApiResponse::ok(Cliente::findOrFail($id));
+	}
 
-    public function byUltimoDigito(string $n) {
-        abort_unless(preg_match('/^[0-9]$/',$n),422,'Dígito inválido');
-        return response()->json(Cliente::whereRaw('RIGHT(placa_carro,1)=?',[$n])->orderBy('nome')->get());
-    }
+	public function byUltimoDigito(string $n)
+	{
+		abort_unless(preg_match('/^[0-9]$/', $n), 422, 'Dígito inválido');
+		return ApiResponse::ok(Cliente::whereRaw('RIGHT(placa_carro,1)=?', [$n])->orderBy('nome')->get());
+	}
 }
