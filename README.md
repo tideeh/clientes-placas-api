@@ -44,3 +44,13 @@ docker compose exec app php artisan migrate --force
 
 # inserir valores iniciais no banco: 
 docker compose exec app php artisan db:seed
+
+```
+## 🧪 Testes via Postman
+
+Uma collection do Postman está disponível em [`docs/CLIENTES-PLACAS-API.postman_collection.json`](docs/CLIENTES-PLACAS-API.postman_collection.json).
+
+Para usar:
+1. Abra o Postman
+2. Importe o arquivo
+
