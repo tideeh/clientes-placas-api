@@ -11,7 +11,7 @@ services:
   web:
     image: nginx:1.27-alpine
     container_name: clientes_placas_nginx
-    ports: ["80:80"]
+    ports: ["8888:80"]
     volumes:
       - ./src:/var/www/html
       - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
