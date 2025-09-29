@@ -26,6 +26,9 @@ cd clientes-placas-api
 # subir containers
 docker compose up -d --build
 
+# instalar dependências Laravel
+docker compose exec app bash -lc "cd /var/www/html && composer install --no-interaction --prefer-dist"
+
 # preparar .env, chave e permissões
 docker compose exec app bash -lc "cd /var/www/html && \
   [ -f .env ] || cp .env.example .env && \
