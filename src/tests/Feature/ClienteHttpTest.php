@@ -63,7 +63,7 @@ it('PUT /api/cliente valida unicidade de cpf no update', function () {
 it('DELETE /api/cliente/{id} remove e retorna 204', function () {
     $payload = [
         'nome' => 'Ana',
-        'telefone' => '1199',
+        'telefone' => '(11) 99999-1111',
         'cpf' => '39053344705',
         'placa_carro' => 'ABC1D23',
     ];
@@ -81,11 +81,11 @@ it('DELETE /api/cliente/{id} 404 quando não existe', function () {
 
 it('GET /api/consulta/final-placa/{n} retorna lista por dígito final', function () {
     $this->postJson('/api/cliente', [
-        'nome' => 'A', 'telefone' => '1', 'cpf' => '15350946056', 'placa_carro' => 'ABC1D23',
+        'nome' => 'A', 'telefone' => '(11) 99999-1111', 'cpf' => '15350946056', 'placa_carro' => 'ABC1D23',
     ])->assertCreated();
 
     $this->postJson('/api/cliente', [
-        'nome' => 'B', 'telefone' => '2', 'cpf' => '39053344705', 'placa_carro' => 'DEF2G34',
+        'nome' => 'B', 'telefone' => '(11) 99999-2222', 'cpf' => '39053344705', 'placa_carro' => 'DEF2G34',
     ])->assertCreated();
 
     $this->getJson('/api/consulta/final-placa/3')

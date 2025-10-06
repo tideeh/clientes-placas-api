@@ -31,10 +31,10 @@ it('falha ao criar com cpf duplicado', function () {
     $repo = Mockery::mock(ClienteRepository::class);
     $cpf = '39053344705';
 
-    $dto = new CreateClienteDto('Ana', '1199', $cpf, 'ABC1D23');
+    $dto = new CreateClienteDto('Ana', '(11) 99999-1111', $cpf, 'ABC1D23');
 
     $repo->shouldReceive('findByCpf')->andReturn(
-        new ClienteEntity(1, 'Ana', '1199', $cpf, 'ABC1D23')
+        new ClienteEntity(1, 'Ana', '(11) 99999-1111', $cpf, 'ABC1D23')
     );
 
     $service = new ClienteService($repo);
@@ -45,17 +45,17 @@ it('atualiza cliente validando campos alterados', function () {
     $repo = Mockery::mock(ClienteRepository::class);
     $cpf = '39053344705';
 
-    $existente = new ClienteEntity(1, 'Ana', '1199', $cpf, 'ABC1D23');
+    $existente = new ClienteEntity(1, 'Ana', '(11) 99999-1111', $cpf, 'ABC1D23');
     $repo->shouldReceive('find')->with(1)->andReturn($existente);
     $repo->shouldReceive('findByCpf')->never();
     $repo->shouldReceive('update')->once()->andReturn(
-        new ClienteEntity(1, 'Ana', '1188', $cpf, 'ABC1D23')
+        new ClienteEntity(1, 'Ana', '(11) 99999-2222', $cpf, 'ABC1D23')
     );
 
     $service = new ClienteService($repo);
-    $c = $service->atualizar(1, ['telefone' => '1188']);
+    $c = $service->atualizar(1, ['telefone' => '(11) 99999-2222']);
 
-    expect($c->telefone)->toBe('1188');
+    expect($c->telefone)->toBe('(11) 99999-2222');
 });
 
 it('remove cliente por id', function () {
