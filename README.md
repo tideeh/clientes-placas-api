@@ -2,7 +2,7 @@
 
 API REST em **Laravel + Docker** para cadastro de **clientes** e suas respectivas **placas de carro**.
 
-## 🚀 Tecnologias
+## Tecnologias
 - [PHP 8.2](https://www.php.net/) + [Laravel 12](https://laravel.com/)
 - [MySQL 8](https://www.mysql.com/)
 - [Nginx](https://www.nginx.com/)
@@ -10,12 +10,12 @@ API REST em **Laravel + Docker** para cadastro de **clientes** e suas respectiva
 
 ---
 
-## 📦 Instalação
+## Instalação
 
 ### Pré-requisitos
 - Docker Desktop (Win/Mac) ou Docker Engine 24+ (Linux)
 - Git
-- (Windows) usar **PowerShell** ou **WSL**. Evite Git Bash.
+- (Windows) usar **PowerShell** ou **WSL**.
 
 ### Passo a passo
 ```bash
@@ -49,7 +49,7 @@ docker compose exec app php artisan migrate --force
 docker compose exec app php artisan db:seed
 
 ```
-## 🧪 Testes via Postman
+## Testes com Postman
 
 Uma collection do Postman está disponível em [`docs/CLIENTES-PLACAS-API.postman_collection.json`](docs/CLIENTES-PLACAS-API.postman_collection.json).
 
