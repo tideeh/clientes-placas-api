@@ -2,40 +2,57 @@
 
 namespace App\Http\Controllers;
 
+use App\Application\Cliente\Dto\CreateClienteDto;
+use App\Application\Cliente\Services\ClienteService;
 use App\Http\Requests\StoreClienteRequest;
 use App\Http\Requests\UpdateClienteRequest;
-use App\Models\Cliente;
-use App\Http\Responses\ApiResponse;
+use App\Http\Resources\ClienteResource;
 
-class ClienteController extends Controller
+class ClienteController
 {
-	public function store(StoreClienteRequest $req)
-	{
-		$c = Cliente::create($req->validated());
-		return ApiResponse::created($c, 'Cliente criado');
-	}
+    public function store(StoreClienteRequest $req, ClienteService $service)
+    {
+        $c = $service->criar(CreateClienteDto::fromArray($req->validated()));
 
-	public function update(UpdateClienteRequest $req, int $id)
-	{
-		$c = Cliente::findOrFail($id);
-		$c->fill($req->validated())->save();
-		return ApiResponse::ok($c, 'Cliente atualizado');
-	}
+        return (new ClienteResource($c))->response()->setStatusCode(201);
+    }
 
-	public function destroy(int $id)
-	{
-		Cliente::findOrFail($id)->delete();
-		return ApiResponse::noContent();
-	}
+    public function update(UpdateClienteRequest $req, int $id, ClienteService $service)
+    {
+        $c = $service->atualizar($id, $req->validated());
+        if (! $c) {
+            return response()->json(['success' => false, 'message' => 'Recurso não encontrado'], 404);
+        }
 
-	public function show(int $id)
-	{
-		return ApiResponse::ok(Cliente::findOrFail($id));
-	}
+        return (new ClienteResource($c))->response()->setStatusCode(200);
+    }
 
-	public function byUltimoDigito(string $n)
-	{
-		abort_unless(preg_match('/^[0-9]$/', $n), 422, 'Dígito inválido');
-		return ApiResponse::ok(Cliente::whereRaw('RIGHT(placa_carro,1)=?', [$n])->orderBy('nome')->get());
-	}
+    public function destroy(int $id, ClienteService $service)
+    {
+        $ok = $service->remover($id);
+
+        return $ok
+            ? response()->noContent()
+            : response()->json(['success' => false, 'message' => 'Recurso não encontrado'], 404);
+    }
+
+    public function show(int $id, ClienteService $service)
+    {
+        $c = $service->buscar($id);
+
+        return $c
+            ? new ClienteResource($c)
+            : response()->json(['success' => false, 'message' => 'Recurso não encontrado'], 404);
+    }
+
+    public function byUltimoDigito(string $n, ClienteService $service)
+    {
+        if (! preg_match('/^\d$/', $n)) {
+            return response()->json(['success' => false, 'message' => 'Dígito inválido'], 422);
+        }
+
+        $list = $service->buscarPorUltimoDigito($n);
+
+        return ClienteResource::collection($list)->response()->setStatusCode(200);
+    }
 }
