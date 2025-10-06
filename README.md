@@ -49,6 +49,11 @@ docker compose exec app php artisan migrate --force
 docker compose exec app php artisan db:seed
 
 ```
+## Testes (Unit + Feature)
+```bash
+docker compose exec app bash -lc "php artisan test"
+
+```
 ## Testes com Postman
 
 Uma collection do Postman está disponível em [`docs/CLIENTES-PLACAS-API.postman_collection.json`](docs/CLIENTES-PLACAS-API.postman_collection.json).
