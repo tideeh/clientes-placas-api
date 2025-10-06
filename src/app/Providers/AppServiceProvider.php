@@ -2,21 +2,20 @@
 
 namespace App\Providers;
 
+use App\Domain\Cliente\Repositories\ClienteRepository;
+use App\Infrastructure\Persistence\Eloquent\Repositories\EloquentClienteRepository;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
 {
-    /**
-     * Register any application services.
-     */
     public function register(): void
     {
-        //
+        $this->app->bind(
+            ClienteRepository::class,
+            EloquentClienteRepository::class
+        );
     }
 
-    /**
-     * Bootstrap any application services.
-     */
     public function boot(): void
     {
         //
